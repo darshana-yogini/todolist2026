@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b382a" />
+    <meta name="description" content="2026년의 하루를 달력과 할 일로 가볍게 계획하세요." />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b382a'/%3E%3Crect x='14' y='17' width='36' height='34' rx='8' fill='%23fffefa'/%3E%3Cpath d='M14 27h36' stroke='%238cdc66' stroke-width='5'/%3E%3Cpath d='M23 12v10M41 12v10' stroke='%23fffefa' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='m24 39 5 5 11-12' fill='none' stroke='%230b382a' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <title>2026 데이 플래너</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="cloud-scene" aria-hidden="true">
+      <img class="cloud cloud-one" src="cloud.png" alt="" />
+      <img class="cloud cloud-two" src="cloud.png" alt="" />
+      <img class="cloud cloud-three" src="cloud.png" alt="" />
+      <img class="cloud cloud-four" src="cloud.png" alt="" />
+    </div>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="2026 데이 플래너 홈">
+          <span class="brand-mark" aria-hidden="true">26</span>
+          <span class="brand-copy"><strong>DAY PLANNER</strong><small>MAKE EVERY DAY COUNT</small></span>
+        </a>
+        <div class="year-stamp" aria-label="2026년">2026</div>
+        <button class="today-button" id="todayButton" type="button">
+          <span class="today-dot" aria-hidden="true"></span>오늘
+        </button>
+      </header>
+
+      <main class="workspace">
+        <section class="calendar-panel" aria-labelledby="monthTitle">
+          <div class="calendar-toolbar">
+            <div>
+              <p class="eyebrow">YEAR 2026 · <span id="monthNumber">09</span>/12</p>
+              <h1 id="monthTitle">9월 <span>September</span></h1>
+            </div>
+            <div class="month-controls" aria-label="월 이동">
+              <button class="icon-button" id="prevMonth" type="button" aria-label="이전 달">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+              </button>
+              <button class="icon-button" id="nextMonth" type="button" aria-label="다음 달">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="weekdays" aria-hidden="true">
+            <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid" role="grid" aria-label="2026년 월간 달력"></div>
+
+          <footer class="month-summary">
+            <div class="summary-copy">
+              <span class="summary-kicker">THIS MONTH</span>
+              <strong id="monthProgressText">아직 등록된 할 일이 없어요</strong>
+            </div>
+            <div class="summary-track" aria-hidden="true"><span id="monthProgressBar"></span></div>
+            <span class="summary-percent" id="monthProgressPercent">0%</span>
+          </footer>
+        </section>
+
+        <aside class="task-panel" aria-labelledby="selectedDateTitle">
+          <div class="date-card">
+            <div class="date-number" id="selectedDay">15</div>
+            <div>
+              <p id="selectedWeekday">화요일</p>
+              <h2 id="selectedDateTitle">9월 15일</h2>
+            </div>
+          </div>
+
+          <form class="task-form" id="taskForm">
+            <label for="taskInput">새로운 할 일</label>
+            <div class="task-input-row">
+              <input id="taskInput" maxlength="80" autocomplete="off" placeholder="무엇을 해낼까요?" required />
+              <button type="submit" aria-label="할 일 추가">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+              </button>
+            </div>
+            <div class="task-options">
+              <label class="select-wrap">
+                <span class="sr-only">분류</span>
+                <select id="taskCategory">
+                  <option value="work">업무</option>
+                  <option value="personal">개인</option>
+                  <option value="health">건강</option>
+                  <option value="study">공부</option>
+                </select>
+              </label>
+              <label class="time-wrap">
+                <span class="sr-only">시간</span>
+                <input type="time" id="taskTime" aria-label="할 일 시간" />
+              </label>
+            </div>
+          </form>
+
+          <div class="task-list-head">
+            <strong>할 일 <span id="taskCount">0</span></strong>
+            <div class="filters" id="filters" aria-label="할 일 필터">
+              <button class="active" type="button" data-filter="all">전체</button>
+              <button type="button" data-filter="open">진행</button>
+              <button type="button" data-filter="done">완료</button>
+            </div>
+          </div>
+
+          <div class="task-list" id="taskList" aria-live="polite"></div>
+
+          <button class="clear-button" id="clearCompleted" type="button">완료한 항목 정리</button>
+        </aside>
+      </main>
+    </div>
+
+    <template id="taskTemplate">
+      <article class="task-item">
+        <button class="check-button" type="button" aria-label="완료로 표시">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8" /></svg>
+        </button>
+        <div class="task-content">
+          <p></p>
+          <span></span>
+        </div>
+        <button class="delete-button" type="button" aria-label="할 일 삭제">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
